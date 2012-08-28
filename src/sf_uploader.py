@@ -5,6 +5,7 @@ Created on Aug 28, 2012
 
 @author: Michal Karm Babacek <mbabacek@redhat.com>
 '''
+
 import xml.etree.ElementTree as ET
 import urllib2
 import urllib2_kerberos

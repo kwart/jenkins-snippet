@@ -5,6 +5,7 @@ Created on Aug 28, 2012
 
 @author: Michal Karm Babacek <mbabacek@redhat.com>
 '''
+
 import xml.etree.ElementTree as ET
 import urllib2
 import urllib2_kerberos
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     processor = Processor()
     manipulator = M.Manipulator()
     processor.getJobs()
-    processor.jobs = ['eap-5x-mod_cluster-python-editor','eap-5x-mod_cluster-python-editor-clone']
+    #processor.jobs = ['eap-5x-mod_cluster-python-editor','eap-5x-mod_cluster-python-editor-clone']
     #print processor.jobs
     number_of_jobs = len(processor.jobs)
     number_of_jobs_done = 0.
