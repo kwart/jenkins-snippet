@@ -11,6 +11,7 @@ import urllib2_kerberos
 import properties
 import re
 import time
+import sys
 
 class Processor:
     """
@@ -36,27 +37,26 @@ class Processor:
 
 if __name__ == '__main__':
     start = time.clock()
-    targetFile = open(properties.TARGET_FILE, 'w')
-    agregatedRoot = ET.Element('rootview')
+    target_file = open(properties.TARGET_FILE, 'w')
+    agregated_root = ET.Element('rootview')
     processor = Processor()
     processor.getJobs()
-    processor.jobs = ['eap-6x-mod_cluster-benchmark-mod_cluster-clusterlab', 'eap-6x-mod_cluster-benchmark-mod_cluster-mix-version']
+    #processor.jobs = ['eap-6x-mod_cluster-benchmark-mod_cluster-clusterlab', 'eap-6x-mod_cluster-benchmark-mod_cluster-mix-version']
     print processor.jobs
+    number_of_jobs = len(processor.jobs)
+    number_of_jobs_done = 0.
     for job in processor.jobs:
-        print 'Processing job %s ...' % job
+        progress = number_of_jobs_done / (float(number_of_jobs) / 100.)
+        message = "Progress: %d %%, Processing job %s ..." % (progress, job)
+        sys.stdout.write(message)
         xml = processor.getJobXML(job)
-        '''
-        Meh, no XML processing will be necessary, we just save it...
-        root = ET.fromstring(xml)
-        for child in root:
-            if child.tag == "description":
-                print child.tag, child.attrib, child.text
-        '''
-        jobXMLroot = ET.fromstring(xml)
-        jobName = ET.Element(processor.jobs[0])
-        jobName.append(jobXMLroot)
-        agregatedRoot.append(jobName)
-        print 'DONE\n'
-    ET.ElementTree(agregatedRoot).write(targetFile)
-    targetFile.close()
-    print "Processing %d jobs took %f seconds. All the xml configurations are in %s file." % (len(processor.jobs), (time.clock() - start), properties.TARGET_FILE)
+        job_xml_root = ET.fromstring(xml)
+        job_name = ET.Element(processor.jobs[0])
+        job_name.append(job_xml_root)
+        agregated_root.append(job_name)
+        print " DONE"
+        number_of_jobs_done += 1
+    ET.ElementTree(agregated_root).write(target_file)
+    target_file.close()
+    print "Processing %d jobs took %f seconds. All the xml configurations are in %s file." % (number_of_jobs, (time.clock() - start), properties.TARGET_FILE)
+
