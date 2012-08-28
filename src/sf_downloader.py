@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 import urllib2
 import urllib2_kerberos
 import properties
+import manipulator as M
 import re
 import sys
 
@@ -35,6 +36,7 @@ if __name__ == '__main__':
     target_file = open(properties.TARGET_FILE, 'w')
     agregated_root = ET.Element('rootview')
     processor = Processor()
+    manipulator = M.Manipulator()
     processor.getJobs()
     processor.jobs = ['eap-5x-mod_cluster-python-editor','eap-5x-mod_cluster-python-editor-clone']
     #print processor.jobs
@@ -49,7 +51,7 @@ if __name__ == '__main__':
         job_xml_root = ET.fromstring(xml)
         job_name = ET.Element(job)
         job_name.append(job_xml_root)
-        agregated_root.append(job_name)
+        agregated_root.append(manipulator.manipulate(job_name))
         print " DONE"
     ET.ElementTree(agregated_root).write(target_file, encoding = properties.ENCODING, xml_declaration = True)
     target_file.close()
