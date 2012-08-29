@@ -12,7 +12,6 @@ import urllib2_kerberos
 import properties
 import manipulator as M
 import re
-import sys
 
 class Processor:
     """
@@ -39,15 +38,14 @@ if __name__ == '__main__':
     processor = Processor()
     manipulator = M.Manipulator()
     processor.getJobs()
-    #processor.jobs = ['eap-5x-mod_cluster-python-editor','eap-5x-mod_cluster-python-editor-clone']
+    processor.jobs = ['eap-5x-mod_cluster-python-editor','eap-5x-mod_cluster-python-editor-clone']
     #print processor.jobs
     number_of_jobs = len(processor.jobs)
     number_of_jobs_done = 0.
     for job in processor.jobs:
         number_of_jobs_done += 1
         progress = number_of_jobs_done / (float(number_of_jobs) / 100.)
-        message = "Progress: %d %%, Processing job %s ..." % (progress, job)
-        sys.stdout.write(message)
+        print "Progress: %d %%, Processing job %s ..." % (progress, job),
         xml = processor.getJobXML(job)
         job_xml_root = ET.fromstring(xml)
         job_name = ET.Element(job)

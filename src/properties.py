@@ -24,21 +24,22 @@ ENCODING = "utf-8"
 """
 Some XML snippets to be added/updated to/in our job configurations.
 """
-IRC_PUBLISHER_XML = "\
-     <hudson.plugins.ircbot.IrcPublisher>\n\
-      <targets>\n\
-        <hudson.plugins.im.GroupChatIMMessageTarget>\n\
-          <name>#mod_cluster</name>\n\
-          <notificationOnly>false</notificationOnly>\n\
-        </hudson.plugins.im.GroupChatIMMessageTarget>\n\
-      </targets>\n\
-      <strategy>ALL</strategy>\n\
-      <notifyOnBuildStart>true</notifyOnBuildStart>\n\
-      <notifySuspects>false</notifySuspects>\n\
-      <notifyCulprits>false</notifyCulprits>\n\
-      <notifyFixers>false</notifyFixers>\n\
-      <notifyUpstreamCommitters>false</notifyUpstreamCommitters>\n\
-      <buildToChatNotifier class=\"hudson.plugins.im.build_notify.SummaryOnlyBuildToChatNotifier\" />\n\
-      <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>\n\
-      <channels />\n\
-    </hudson.plugins.ircbot.IrcPublisher>\n"
+IRC_PUBLISHER_XML = """
+     <hudson.plugins.ircbot.IrcPublisher>
+      <targets>
+        <hudson.plugins.im.GroupChatIMMessageTarget>
+          <name>#mod_cluster</name>
+          <notificationOnly>false</notificationOnly>
+        </hudson.plugins.im.GroupChatIMMessageTarget>
+      </targets>
+      <strategy>ALL</strategy>
+      <notifyOnBuildStart>true</notifyOnBuildStart>
+      <notifySuspects>false</notifySuspects>
+      <notifyCulprits>false</notifyCulprits>
+      <notifyFixers>false</notifyFixers>
+      <notifyUpstreamCommitters>false</notifyUpstreamCommitters>
+      <buildToChatNotifier class=\"hudson.plugins.im.build_notify.SummaryOnlyBuildToChatNotifier\" />
+      <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>
+      <channels />
+    </hudson.plugins.ircbot.IrcPublisher>
+"""
