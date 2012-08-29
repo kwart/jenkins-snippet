@@ -9,4 +9,9 @@ HOW-TO
  
 Footnote
 --------
-I have updated dozens of jobs with this tool, however, use at your own risk...
+ * I have updated dozens of jobs with this tool, however, use at your own risk...
+ * Some python libs, available as rpms, you will need:
+   * python-lxml
+   * python-kerberos
+   * python-urllib2_kerberos
+
