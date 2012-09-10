@@ -20,6 +20,7 @@ class Manipulator:
         element = self.addIRCNotification(element)
         element = self.removeObsoleteShellTask(element)
         element = self.switchSmartFrogInstance(element)
+        element = self.makeSureAboutHttpdTemplate(element)
         return element
 
     def addIRCNotification(self, element):
@@ -51,5 +52,20 @@ class Manipulator:
         smartfrog_name = element.find("project").find("builders").find("builder.smartfrog.SmartFrogBuilder").find("smartFrogName")
         #if smartfrog_name.text is "SmartFrog 3.17 (DEBUG) mbabacek_fix":
         smartfrog_name.text = "SmartFrog 3.17 (DEBUG) mbabacek_playground"
+        return element
+
+    def makeSureAboutHttpdTemplate(self, element):
+        """
+        For RHEL, it should always be httpdPrepareTemplate
+        """
+        if element.tag.find("rhel") is not -1:
+            sf_builder = element.find("project").find("builders").find("builder.smartfrog.SmartFrogBuilder")
+            sf_script_source = sf_builder.find("sfScriptSource")
+            smartfrog_script = ""
+            if sf_script_source is not None:
+                smartfrog_script = sf_script_source.find("scriptContent")
+            else:
+                smartfrog_script = sf_builder.find("scriptContent")
+            smartfrog_script.text = smartfrog_script.text.replace("LAZY EwsPrepareModCluster ","LAZY httpdPrepareTemplate ")
         return element
 
