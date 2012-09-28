@@ -17,9 +17,11 @@ class Manipulator:
         Before we save the file, we may want to add or remove some
         elements as well as edit some text.
         """
+
         if not properties.LEAVE_UNCHANGED:
             element = self.addIRCNotification(element)
             element = self.removeObsoleteShellTask(element)
+            element = self.removeObsoleteSystemGroovyTask(element)
             element = self.switchSmartFrogInstance(element)
             element = self.makeSureAboutHttpdTemplate(element)
         return element
@@ -30,7 +32,7 @@ class Manipulator:
         """
         publishers = element.find("project").find("publishers")
         old_irc_publisher = publishers.find("hudson.plugins.ircbot.IrcPublisher")
-        if old_irc_publisher != None:
+        if old_irc_publisher is not None:
             publishers.remove(old_irc_publisher)
         irc_publisher_root = ET.fromstring(properties.IRC_PUBLISHER_XML)
         publishers.append(irc_publisher_root)
@@ -42,7 +44,17 @@ class Manipulator:
         """
         builders = element.find("project").find("builders")
         shell_task = builders.find("hudson.tasks.Shell")
-        if shell_task != None:
+        if shell_task is not None:
+            builders.remove(shell_task)
+        return element
+
+    def removeObsoleteSystemGroovyTask(self, element):
+        """
+        We remove an obsolete SystemGroovyTask
+        """
+        builders = element.find("project").find("builders")
+        shell_task = builders.find("hudson.plugins.groovy.SystemGroovy")
+        if shell_task is not None:
             builders.remove(shell_task)
         return element
 
@@ -50,9 +62,11 @@ class Manipulator:
         """
         Meh, we kinda swap SmartFrog instances...
         """
-        smartfrog_name = element.find("project").find("builders").find("builder.smartfrog.SmartFrogBuilder").find("smartFrogName")
-        #if smartfrog_name.text is "SmartFrog 3.17 (DEBUG) mbabacek_fix":
-        smartfrog_name.text = "SmartFrog 3.17 (DEBUG) mbabacek_playground"
+        smartfrog_builder = element.find("project").find("builders").find("builder.smartfrog.SmartFrogBuilder")
+        if smartfrog_builder is not None:
+            smartfrog_name = smartfrog_builder.find("smartFrogName")
+            #if smartfrog_name.text is "SmartFrog 3.17 (DEBUG) mbabacek_fix":
+            smartfrog_name.text = "SmartFrog 3.17 (DEBUG) mbabacek_playground"
         return element
 
     def makeSureAboutHttpdTemplate(self, element):
@@ -61,12 +75,13 @@ class Manipulator:
         """
         if element.tag.find("rhel") is not -1:
             sf_builder = element.find("project").find("builders").find("builder.smartfrog.SmartFrogBuilder")
-            sf_script_source = sf_builder.find("sfScriptSource")
-            smartfrog_script = ""
-            if sf_script_source is not None:
-                smartfrog_script = sf_script_source.find("scriptContent")
-            else:
-                smartfrog_script = sf_builder.find("scriptContent")
-            smartfrog_script.text = smartfrog_script.text.replace("LAZY EwsPrepareModCluster ","LAZY httpdPrepareTemplate ")
+            if sf_builder is not None:
+                sf_script_source = sf_builder.find("sfScriptSource")
+                smartfrog_script = ""
+                if sf_script_source is not None:
+                    smartfrog_script = sf_script_source.find("scriptContent")
+                else:
+                    smartfrog_script = sf_builder.find("scriptContent")
+                    smartfrog_script.text = smartfrog_script.text.replace("LAZY EwsPrepareModCluster ","LAZY httpdPrepareTemplate ")
         return element
 
