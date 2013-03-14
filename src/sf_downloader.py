@@ -34,6 +34,8 @@ class Processor:
         return resp.read()
 
 if __name__ == '__main__':
+    script, mask = sys.argv
+    regex_job_name = re.compile(mask)
     target_file = open(properties.TARGET_FILE, 'w')
     agregated_root = ET.Element('rootview')
     processor = Processor()
@@ -49,12 +51,15 @@ if __name__ == '__main__':
         progress = number_of_jobs_done / (float(number_of_jobs) / 100.)
         sys.stdout.write("Progress: %d %%, Processing job %s ..." % (progress, job))
         sys.stdout.flush()
-        xml = processor.getJobXML(job)
-        job_xml_root = ET.fromstring(xml)
-        job_name = ET.Element(job)
-        job_name.append(job_xml_root)
-        agregated_root.append(manipulator.manipulate(job_name))
-        sys.stdout.write(" DONE\n")
+        if regex_job_name.match(job):
+            xml = processor.getJobXML(job)
+            job_xml_root = ET.fromstring(xml)
+            job_name = ET.Element(job)
+            job_name.append(job_xml_root)
+            agregated_root.append(manipulator.manipulate(job_name))
+            sys.stdout.write(" DONE\n")
+        else:
+            sys.stdout.write("SKIPPED\n")
     ET.ElementTree(agregated_root).write(target_file, encoding = properties.ENCODING, xml_declaration = True)
     target_file.close()
     print "%d jobs processed. All the xml configurations are in %s file." % (number_of_jobs, properties.TARGET_FILE)
