@@ -20,6 +20,7 @@ Target files for storing our jobs
 TARGET_FILE = "./xmls/project5.xml"
 #TARGET_FILE = "./xmls/project6.xml"
 ENCODING = "utf-8"
+LEAVE_UNCHANGED = False
 
 """
 Some XML snippets to be added/updated to/in our job configurations.

@@ -34,6 +34,9 @@ if __name__ == '__main__':
         message = "Progress: %d %%, Processing job %s ..." % (progress, job.tag)
         sys.stdout.write(message)
         project = job.find("project")
+        if project == None:
+            # it can be also a matrix job, lets try it
+            project = job.find("matrix-project")
         project = ET.tostring(project, encoding=properties.ENCODING)
         opener = urllib2.build_opener()
         opener.add_handler(urllib2_kerberos.HTTPKerberosAuthHandler())
