@@ -17,10 +17,11 @@ class Manipulator:
         Before we save the file, we may want to add or remove some
         elements as well as edit some text.
         """
-        element = self.addIRCNotification(element)
-        element = self.removeObsoleteShellTask(element)
-        element = self.switchSmartFrogInstance(element)
-        element = self.makeSureAboutHttpdTemplate(element)
+        if not properties.LEAVE_UNCHANGED:
+            element = self.addIRCNotification(element)
+            element = self.removeObsoleteShellTask(element)
+            element = self.switchSmartFrogInstance(element)
+            element = self.makeSureAboutHttpdTemplate(element)
         return element
 
     def addIRCNotification(self, element):
