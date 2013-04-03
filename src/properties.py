@@ -20,7 +20,7 @@ Target files for storing our jobs
 #TARGET_FILE = "./xmls/EAP5.xml"
 TARGET_FILE = "./xmls/EAP6.xml"
 ENCODING = "utf-8"
-LEAVE_UNCHANGED = False
+LEAVE_UNCHANGED = True
 
 """
 Some XML snippets to be added/updated to/in our job configurations.
