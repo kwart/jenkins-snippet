@@ -12,6 +12,7 @@ import urllib2_kerberos
 import properties
 import sys
 import re
+import time
 
 
 class Processor:
@@ -19,6 +20,7 @@ class Processor:
     Meh...
     """
     job_elements = []
+    errors = 0
 
     def getJobs(self):
         tree = ET.parse(properties.TARGET_FILE)
@@ -46,13 +48,31 @@ if __name__ == '__main__':
             opener = urllib2.build_opener()
             opener.add_handler(urllib2_kerberos.HTTPKerberosAuthHandler())
             req = urllib2.Request(properties.BASE_URL + properties.CONFIG_CONTEXT + job.tag + properties.CONFIX_XML, data = project, headers = { "Content-type" : "text/xml; charset="+properties.ENCODING})
-            response = opener.open(req)
-            if response.code == 200:
+            response = None
+            try:
+                response = opener.open(req)
+            except urllib2.URLError:
+                for trial in range(0, 6):
+                    sys.stdout.write("...")
+                    sys.stdout.flush()
+                    time.sleep(1)
+                    try:
+                        response = opener.open(req)
+                        if response.code == 200:
+                            break
+                    except urllib2.URLError:
+                        sys.stdout.write("...")
+            if response != None and response.code == 200:
                 sys.stdout.write(" DONE\n")
             else:
-                sys.stdout.write(" ERROR code: %d\n" % response.code)
+                sys.stdout.write(" ERROR\n")
+                processor.errors +=1
         else:
             sys.stdout.write("SKIPPED\n")
         sys.stdout.flush()
-    print "\n%d jobs processed. All the xml configurations were uploaded from file %s to your Jenkins :-)" % (number_of_jobs, properties.TARGET_FILE)
+    if processor.errors == 0:
+        print "\n%d jobs processed. All the xml configurations were uploaded from file %s to your Jenkins :-)" % (number_of_jobs, properties.TARGET_FILE)
+    else:
+        print "\n%d jobs processed. Some of the xml configurations were uploaded from file %s to your Jenkins. There were %d errors." % (number_of_jobs, properties.TARGET_FILE, processor.errors)
+
 
