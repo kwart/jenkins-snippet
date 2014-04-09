@@ -4,6 +4,7 @@ HOW-TO
 ======
  * Take a look into properties.py and sf_downloader.py
  * Run sf_downloader.py
+  * e.g. ```python src/sf_downloader.py '^(?!.*noe).*$'``` will download all jobs but those with ```noe``` in their name.
  * Make any additional XML transformations you like
  * Run sf_uploader.py
  
