@@ -14,6 +14,7 @@ import manipulator as M
 import re
 import sys
 import time
+import json
 
 class Processor:
     """
@@ -25,9 +26,9 @@ class Processor:
     def getJobs(self):
         opener = urllib2.build_opener()
         opener.add_handler(urllib2_kerberos.HTTPKerberosAuthHandler())
-        resp = opener.open(properties.URL)
-        regex = re.compile(properties.REGEXP)
-        self.jobs = regex.findall(resp.read())
+        resp = opener.open(properties.URL + properties.API_URL)
+        jobs_json = json.load(resp)
+        self.jobs = [x['name'] for x in jobs_json['jobs']]
 
     def getJobXML(self, job):
         opener = urllib2.build_opener()
@@ -89,4 +90,3 @@ if __name__ == '__main__':
         print "%d jobs processed. All the xml configurations are in %s file." % (number_of_jobs, properties.TARGET_FILE)
     else:
         print "%d jobs processed. Some of the xml configurations are in %s file. There were %d errors." % (number_of_jobs, properties.TARGET_FILE, processor.errors)
-
