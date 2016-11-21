@@ -43,6 +43,9 @@ if __name__ == '__main__':
         if project == None:
             # it can be also a matrix job, lets try it
             project = job.find("matrix-project")
+        if project == None:
+            # it can be also a build flow job, lets try it
+            project = job.find("com.cloudbees.plugins.flow.BuildFlow")
         project = ET.tostring(project, encoding=properties.ENCODING)
         if regex_job_name.match(job.tag):
             opener = urllib2.build_opener()
@@ -74,5 +77,3 @@ if __name__ == '__main__':
         print "\n%d jobs processed. All the xml configurations were uploaded from file %s to your Jenkins :-)" % (number_of_jobs, properties.TARGET_FILE)
     else:
         print "\n%d jobs processed. Some of the xml configurations were uploaded from file %s to your Jenkins. There were %d errors." % (number_of_jobs, properties.TARGET_FILE, processor.errors)
-
-
