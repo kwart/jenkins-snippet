@@ -12,7 +12,7 @@ BASE_URL = "https://jenkins.mw.lab.eng.bos.redhat.com"
 URL = BASE_URL+"/hudson/view/mod_cluster/view/mod_cluster-QE/view/mod_cluster-QE-eap-6x/"
 CONFIG_CONTEXT = "/hudson/job/"
 CONFIX_XML = "/config.xml"
-REGEXP = ".*<td><a href=\"job\/([^\/]*)\/.*"
+API_URL="/api/json"
 
 """
 Target files for storing our jobs
