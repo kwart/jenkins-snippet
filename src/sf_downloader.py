@@ -7,6 +7,7 @@ Created on Aug 28, 2012
 '''
 
 import xml.etree.ElementTree as ET
+import urllib
 import urllib2
 import urllib2_kerberos
 import properties
@@ -34,7 +35,7 @@ class Processor:
         opener = urllib2.build_opener()
         opener.add_handler(urllib2_kerberos.HTTPKerberosAuthHandler())
         resp = None
-        req = properties.BASE_URL + properties.CONFIG_CONTEXT + job + properties.CONFIX_XML
+        req = properties.BASE_URL + properties.CONFIG_CONTEXT + urllib.quote(job) + properties.CONFIX_XML
         try:
             resp = opener.open(req)
         except urllib2.URLError:
