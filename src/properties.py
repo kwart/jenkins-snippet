@@ -7,18 +7,18 @@ Created on Aug 28, 2012
 """
 URLs and contexts
 """
-BASE_URL = "https://jenkins.mw.lab.eng.bos.redhat.com"
+BASE_URL = "http://jenkins.hazelcast.com/"
 #URL = BASE_URL+"/hudson/view/mod_cluster/view/mod_cluster-QE/view/mod_cluster-QE-eap-5x/"
-URL = BASE_URL+"/hudson/view/mod_cluster/view/mod_cluster-QE/view/mod_cluster-QE-eap-6x/"
-CONFIG_CONTEXT = "/hudson/job/"
+URL = BASE_URL+"/"
+CONFIG_CONTEXT = "/job/"
 CONFIX_XML = "/config.xml"
 API_URL="/api/json"
+JSESSION_COOKIE="JSESSION.a2c7ca39=....node0"
 
 """
 Target files for storing our jobs
 """
-#TARGET_FILE = "./xmls/EAP5.xml"
-TARGET_FILE = "./xmls/EAP6.xml"
+TARGET_FILE = "jenkins-hazelcast.xml"
 ENCODING = "utf-8"
 LEAVE_UNCHANGED = True
 

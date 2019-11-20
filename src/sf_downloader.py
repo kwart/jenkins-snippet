@@ -7,8 +7,8 @@ Created on Aug 28, 2012
 '''
 
 import xml.etree.ElementTree as ET
+import urllib
 import urllib2
-import urllib2_kerberos
 import properties
 import manipulator as M
 import re
@@ -25,16 +25,16 @@ class Processor:
 
     def getJobs(self):
         opener = urllib2.build_opener()
-        opener.add_handler(urllib2_kerberos.HTTPKerberosAuthHandler())
+        opener.addheaders.append(('Cookie', properties.JSESSION_COOKIE))
         resp = opener.open(properties.URL + properties.API_URL)
         jobs_json = json.load(resp)
         self.jobs = [x['name'] for x in jobs_json['jobs']]
 
     def getJobXML(self, job):
         opener = urllib2.build_opener()
-        opener.add_handler(urllib2_kerberos.HTTPKerberosAuthHandler())
+        opener.addheaders.append(('Cookie', properties.JSESSION_COOKIE))
         resp = None
-        req = properties.BASE_URL + properties.CONFIG_CONTEXT + job + properties.CONFIX_XML
+        req = properties.BASE_URL + properties.CONFIG_CONTEXT + urllib.quote(job) + properties.CONFIX_XML
         try:
             resp = opener.open(req)
         except urllib2.URLError:
