@@ -25,14 +25,14 @@ class Processor:
 
     def getJobs(self):
         opener = urllib2.build_opener()
-        opener.addheaders.append(('Cookie', properties.JSESSION_COOKIE))
-        resp = opener.open(properties.URL + properties.API_URL)
+        opener.addheaders.append(('Cookie', properties.AUTH_COOKIES))
+        resp = opener.open(properties.BASE_URL + properties.API_URL)
         jobs_json = json.load(resp)
         self.jobs = [x['name'] for x in jobs_json['jobs']]
 
     def getJobXML(self, job):
         opener = urllib2.build_opener()
-        opener.addheaders.append(('Cookie', properties.JSESSION_COOKIE))
+        opener.addheaders.append(('Cookie', properties.AUTH_COOKIES))
         resp = None
         req = properties.BASE_URL + properties.CONFIG_CONTEXT + urllib.quote(job) + properties.CONFIX_XML
         try:
@@ -54,7 +54,10 @@ class Processor:
             return None
 
 if __name__ == '__main__':
-    script, mask = sys.argv
+    if len(sys.argv) > 1:
+        mask = sys.argv[1]
+    else:
+        mask = '^.*$'
     regex_job_name = re.compile(mask)
     target_file = open(properties.TARGET_FILE, 'w')
     agregated_root = ET.Element('rootview')
@@ -78,7 +81,8 @@ if __name__ == '__main__':
                 processor.errors += 1
             else:
                 job_xml_root = ET.fromstring(xml)
-                job_name = ET.Element(job)
+                job_name = ET.Element('view')
+                job_name.set('name', job)
                 job_name.append(job_xml_root)
                 agregated_root.append(manipulator.manipulate(job_name))
                 sys.stdout.write(" DONE\n")

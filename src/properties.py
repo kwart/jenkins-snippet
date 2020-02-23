@@ -7,13 +7,18 @@ Created on Aug 28, 2012
 """
 URLs and contexts
 """
-BASE_URL = "http://jenkins.hazelcast.com/"
+BASE_URL = "http://jenkins.hazelcast.com"
 #URL = BASE_URL+"/hudson/view/mod_cluster/view/mod_cluster-QE/view/mod_cluster-QE-eap-5x/"
 URL = BASE_URL+"/"
 CONFIG_CONTEXT = "/job/"
 CONFIX_XML = "/config.xml"
 API_URL="/api/json"
-JSESSION_COOKIE="JSESSION.a2c7ca39=....node0"
+
+# copy cookies from your browser - e.g. in Chrome (https://stackoverflow.com/a/21919431/653069):
+# Hit F12 to open the developer console and switch to the Network tab.
+# Reload Jenkins page
+# Right click the relevant request, and select "Copy request headers" and in a text editor just pick the "Cookie:" value
+AUTH_COOKIES='_ga=...;... JSESSIONID...=...'
 
 """
 Target files for storing our jobs
